@@ -591,6 +591,28 @@
     .collect-val { font-weight: 700; color: var(--income); }
     .collect-muted { font-size: .78rem; color: var(--muted); }
 
+    /* ── Cost Type Toggle ──────────────────────────────────────── */
+    .cost-type-toggle {
+      display: inline-flex;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .cost-type-btn {
+      background: transparent; border: none; cursor: pointer;
+      font-family: inherit; font-size: .79rem; font-weight: 600;
+      padding: 5px 13px; color: var(--muted);
+      transition: background .12s, color .12s;
+      line-height: 1;
+    }
+    .cost-type-btn.active { background: var(--accent); color: #fff; }
+    .cost-type-badge {
+      font-size: .67rem; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .cost-type-badge.ctype-total    { background: rgba(239,68,68,.1);   color: var(--expense); }
+    .cost-type-badge.ctype-per-person { background: rgba(99,102,241,.12); color: var(--accent); }
+
     .receipt-footer {
       padding: 13px 20px;
       border-top: 1px solid var(--border);
@@ -876,6 +898,14 @@
         </div>
         <div class="card-body">
           <div class="field-group">
+            <label class="field-label">Project</label>
+            <div style="display:flex;gap:6px;align-items:center">
+              <select class="field-input" id="esProjectSel" style="flex:1;margin:0"></select>
+              <button class="btn btn-ghost btn-sm" id="esNewProjectBtn" style="white-space:nowrap;flex-shrink:0">+ New</button>
+              <button class="btn btn-ghost btn-sm" id="esDeleteProjectBtn" title="Delete project" style="white-space:nowrap;flex-shrink:0">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="field-group">
             <label class="field-label" for="evEventName">Event Name</label>
             <input class="field-input" id="evEventName" type="text" placeholder="e.g. Gathering April 2026" autocomplete="off" />
           </div>
@@ -900,6 +930,13 @@
             <div class="ev-add-row">
               <input class="field-input" id="evItemName" type="text" placeholder="e.g. Venue Rent" autocomplete="off" style="margin:0" />
               <input class="field-input" id="evItemAmt"  type="number" placeholder="Amount" min="0" step="1" style="margin:0" />
+            </div>
+            <div style="margin-bottom:10px">
+              <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Amount Type</div>
+              <div class="cost-type-toggle">
+                <button type="button" class="cost-type-btn active" id="evCostTotal">Total</button>
+                <button type="button" class="cost-type-btn" id="evCostPerPerson">Per Person</button>
+              </div>
             </div>
             <label class="ev-paid-label">
               <input type="checkbox" id="evItemPaid" />
@@ -1488,8 +1525,82 @@ $('evShareBtn').onclick = () => {
     });
 };
 
+// ─── Event Splitter Projects ──────────────────────────────────
+let currentESProject = null;
+
+function getESProjects() {
+  try { return JSON.parse(localStorage.getItem('ev-projects') || '{}'); } catch(_) { return {}; }
+}
+function saveESProjects(p) {
+  try { localStorage.setItem('ev-projects', JSON.stringify(p)); } catch(_) {}
+}
+
+function renderESProjectDropdown() {
+  const sel = $('esProjectSel');
+  const projects = getESProjects();
+  const names = Object.keys(projects);
+  sel.innerHTML = names.length === 0
+    ? '<option value="">—</option>'
+    : names.map(n => `<option value="${esc(n)}"${n === currentESProject ? ' selected' : ''}>${esc(n)}</option>`).join('');
+}
+
+function switchESProject(name) {
+  if (!name) return;
+  const p = (getESProjects()[name]) || { name: '', people: 2, items: [] };
+  currentESProject = name;
+  ES.name = p.name || ''; ES.people = p.people || 2; ES.items = p.items || [];
+  $('evEventName').value = ES.name;
+  $('evPeople').value = ES.people;
+  renderEvItems(); renderReceipt();
+  try { localStorage.setItem('ev-active-project', name); } catch(_) {}
+}
+
+$('esProjectSel').addEventListener('change', () => switchESProject($('esProjectSel').value));
+
+$('esNewProjectBtn').onclick = () => {
+  const name = prompt('Project name:');
+  if (!name || !name.trim()) return;
+  const n = name.trim();
+  const projects = getESProjects();
+  if (projects[n]) { showToast('Project already exists.', 'warn'); return; }
+  projects[n] = { name: '', people: 2, items: [] };
+  saveESProjects(projects);
+  currentESProject = n;
+  try { localStorage.setItem('ev-active-project', n); } catch(_) {}
+  renderESProjectDropdown();
+  switchESProject(n);
+  showToast(`Project "${n}" created.`);
+};
+
+$('esDeleteProjectBtn').onclick = () => {
+  if (!currentESProject) return;
+  if (!confirm(`Delete project "${currentESProject}"?`)) return;
+  const projects = getESProjects();
+  delete projects[currentESProject];
+  saveESProjects(projects);
+  const names = Object.keys(projects);
+  currentESProject = names.length > 0 ? names[0] : null;
+  if (currentESProject) {
+    try { localStorage.setItem('ev-active-project', currentESProject); } catch(_) {}
+    renderESProjectDropdown();
+    switchESProject(currentESProject);
+  } else {
+    // No projects left — create a fresh Default
+    projects['Default'] = { name: '', people: 2, items: [] };
+    saveESProjects(projects);
+    currentESProject = 'Default';
+    try { localStorage.setItem('ev-active-project', currentESProject); } catch(_) {}
+    renderESProjectDropdown();
+    switchESProject(currentESProject);
+  }
+  showToast('Project deleted.', 'info');
+};
+
 function persistES() {
-  try { localStorage.setItem('eventsplitter', JSON.stringify(ES)); } catch (_) {}
+  if (!currentESProject) return;
+  const projects = getESProjects();
+  projects[currentESProject] = { name: ES.name, people: ES.people, items: ES.items };
+  saveESProjects(projects);
 }
 
 function loadES() {
@@ -1509,12 +1620,29 @@ function loadES() {
       return;
     }
   } catch (_) {}
-  try {
-    const saved = JSON.parse(localStorage.getItem('eventsplitter') || '{}');
-    ES.name   = saved.name   || '';
-    ES.people = saved.people || 2;
-    ES.items  = saved.items  || [];
-  } catch (_) {}
+  const projects = getESProjects();
+  const names = Object.keys(projects);
+  let active = null;
+  try { active = localStorage.getItem('ev-active-project'); } catch(_) {}
+  if (active && projects[active]) {
+    currentESProject = active;
+  } else if (names.length > 0) {
+    currentESProject = names[0];
+    try { localStorage.setItem('ev-active-project', currentESProject); } catch(_) {}
+  } else {
+    // First run — migrate legacy 'eventsplitter' key if present
+    currentESProject = 'Default';
+    try {
+      const saved = JSON.parse(localStorage.getItem('eventsplitter') || '{}');
+      projects[currentESProject] = { name: saved.name || '', people: saved.people || 2, items: saved.items || [] };
+    } catch(_) {
+      projects[currentESProject] = { name: '', people: 2, items: [] };
+    }
+    saveESProjects(projects);
+    try { localStorage.setItem('ev-active-project', currentESProject); } catch(_) {}
+  }
+  const p = projects[currentESProject];
+  ES.name = p.name || ''; ES.people = p.people || 2; ES.items = p.items || [];
 }
 
 // ─── Persistence ──────────────────────────────────────────────
@@ -1555,6 +1683,7 @@ loadES();
 applyTheme();
 render();
 // Sync event splitter inputs with loaded state
+renderESProjectDropdown();
 $('evEventName').value = ES.name;
 $('evPeople').value    = ES.people;
 renderEvItems();
