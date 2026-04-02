@@ -410,6 +410,193 @@
     }
     .modal-footer { margin-top: 14px; display: flex; justify-content: flex-end; }
 
+    /* ── Tab Nav ──────────────────────────────────────────── */
+    .tab-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 63px;
+      z-index: 40;
+      box-shadow: var(--sh);
+    }
+    .tab-nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      gap: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 11px 18px;
+      font-family: inherit;
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Event Splitter Layout ─────────────────────────────── */
+    .ev-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .ev-wrap { grid-template-columns: 1fr; padding: 14px 12px; gap: 14px; }
+    }
+    .ev-left { display: flex; flex-direction: column; gap: 18px; }
+
+    .field-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .field-group:last-child { margin-bottom: 0; }
+    .field-label {
+      font-size: .75rem; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: .05em;
+    }
+    .field-input {
+      padding: 10px 13px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface2);
+      color: var(--text);
+      font-family: inherit; font-size: .92rem;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+      width: 100%;
+    }
+    .field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.12); }
+
+    .ev-add-row { display: grid; grid-template-columns: 1fr 110px; gap: 8px; margin-bottom: 10px; }
+    .ev-paid-label {
+      display: flex; align-items: center; gap: 7px;
+      font-size: .84rem; font-weight: 500; color: var(--muted);
+      cursor: pointer; margin-bottom: 10px; user-select: none;
+    }
+    .ev-paid-label input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; }
+
+    .ev-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      animation: slideIn .18s ease;
+      transition: box-shadow .15s;
+    }
+    .ev-item:hover { box-shadow: var(--sh-md); }
+    .ev-item.is-paid { border-color: rgba(99,102,241,.3); background: rgba(99,102,241,.05); }
+    .ev-item-name { flex: 1; font-weight: 500; font-size: .88rem; }
+    .ev-item-amt { font-weight: 700; font-size: .92rem; color: var(--expense); min-width: 64px; text-align: right; }
+    .paid-badge {
+      font-size: .68rem; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+      background: rgba(99,102,241,.15); color: var(--accent);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .ev-paid-chk-wrap {
+      display: flex; align-items: center; gap: 5px;
+      font-size: .74rem; color: var(--muted); white-space: nowrap; flex-shrink: 0;
+    }
+    .ev-paid-chk-wrap input { width: 13px; height: 13px; accent-color: var(--accent); cursor: pointer; }
+
+    /* ── Receipt Card ──────────────────────────────────────── */
+    .receipt {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: var(--sh);
+      overflow: hidden;
+    }
+    .receipt-top {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      padding: 22px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .receipt-top::before {
+      content: ''; position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      background: rgba(255,255,255,.07); border-radius: 50%;
+    }
+    .receipt-event-name {
+      font-size: 1.15rem; font-weight: 800;
+      color: #fff; margin-bottom: 5px;
+      position: relative; z-index: 1;
+    }
+    .receipt-meta { font-size: .8rem; color: rgba(255,255,255,.7); position: relative; z-index: 1; }
+
+    .receipt-body { padding: 18px 20px; }
+    .receipt-total-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px;
+    }
+    .receipt-total-label { font-size: .85rem; color: var(--muted); }
+    .receipt-total-val { font-size: 1.45rem; font-weight: 800; }
+
+    .receipt-cpp {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px;
+      background: var(--surface2); border-radius: 10px; margin-bottom: 16px;
+    }
+    .receipt-cpp-label { font-size: .88rem; font-weight: 600; }
+    .receipt-cpp-val { font-size: 1.55rem; font-weight: 800; color: var(--accent); }
+
+    .receipt-section-label {
+      font-size: .7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--muted); margin-bottom: 8px;
+    }
+    .receipt-divider { border: none; border-top: 1px dashed var(--border); margin: 12px 0; }
+
+    .receipt-line {
+      display: flex; align-items: baseline;
+      padding: 5px 0; font-size: .84rem; gap: 8px;
+    }
+    .receipt-line-name { flex: 1; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .receipt-line-total { font-weight: 600; color: var(--text); min-width: 58px; text-align: right; }
+    .receipt-line-pp { font-weight: 700; color: var(--accent); min-width: 72px; text-align: right; }
+
+    .collect-box {
+      margin-top: 14px;
+      background: rgba(16,185,129,.07);
+      border: 1px solid rgba(16,185,129,.22);
+      border-radius: 10px;
+      padding: 13px 15px;
+    }
+    .collect-title {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .05em; color: var(--income); margin-bottom: 9px;
+    }
+    .collect-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-size: .86rem; padding: 3px 0;
+    }
+    .collect-val { font-weight: 700; color: var(--income); }
+    .collect-muted { font-size: .78rem; color: var(--muted); }
+
+    .receipt-footer {
+      padding: 13px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 8px;
+    }
+
     /* ── Toast ────────────────────────────────────────────── */
     .toast {
       position: fixed; bottom: 24px; right: 24px;
@@ -461,7 +648,27 @@
   </div>
 </header>
 
-<!-- ── Main ────────────────────────────────────────────────── -->
+<!-- ── Tab Nav ────────────────────────────────────────────── -->
+<nav class="tab-nav" aria-label="Sections">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="budget">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+      Budget
+    </button>
+    <button class="tab-btn" data-tab="event">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      Event Splitter
+    </button>
+  </div>
+</nav>
+
+<!-- ── Budget Tab ─────────────────────────────────────────── -->
+<div id="tab-budget" class="tab-panel active">
 <main>
 
   <!-- Hero summary -->
@@ -650,6 +857,139 @@
   </div>
 
 </main>
+</div><!-- /tab-budget -->
+
+<!-- ── Event Splitter Tab ─────────────────────────────────── -->
+<div id="tab-event" class="tab-panel">
+  <div class="ev-wrap">
+
+    <!-- Left column: config + items -->
+    <div class="ev-left">
+
+      <!-- Event details -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="dot" style="background:var(--accent2)"></span>
+            Event Details
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="field-group">
+            <label class="field-label" for="evEventName">Event Name</label>
+            <input class="field-input" id="evEventName" type="text" placeholder="e.g. Gathering April 2026" autocomplete="off" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="evPeople">Number of People</label>
+            <input class="field-input" id="evPeople" type="number" min="1" value="2" placeholder="e.g. 10" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Expense items -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="dot" style="background:var(--expense)"></span>
+            Expense Items
+          </div>
+          <button class="btn btn-expense btn-sm" id="evAddBtn">+ Add</button>
+        </div>
+        <div class="card-body">
+          <div class="add-form" id="evAddForm">
+            <div class="ev-add-row">
+              <input class="field-input" id="evItemName" type="text" placeholder="e.g. Venue Rent" autocomplete="off" style="margin:0" />
+              <input class="field-input" id="evItemAmt"  type="number" placeholder="Amount" min="0" step="1" style="margin:0" />
+            </div>
+            <label class="ev-paid-label">
+              <input type="checkbox" id="evItemPaid" />
+              I paid this expense
+            </label>
+            <div class="form-actions">
+              <button class="btn btn-expense" id="evSubmitItem">Add Item</button>
+              <button class="btn btn-ghost"   id="evCancelItem">Cancel</button>
+            </div>
+          </div>
+
+          <div class="items-list" id="evItemsList">
+            <div class="empty" id="evItemsEmpty">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                <rect x="9" y="3" width="6" height="4" rx="1"/>
+                <line x1="9" y1="12" x2="15" y2="12"/>
+                <line x1="9" y1="16" x2="13" y2="16"/>
+              </svg>
+              <p>No expenses yet.<br>Click <strong>+ Add</strong> to begin.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /ev-left -->
+
+    <!-- Right column: receipt -->
+    <div class="receipt">
+      <div class="receipt-top">
+        <div class="receipt-event-name" id="receiptEventName">Unnamed Event</div>
+        <div class="receipt-meta" id="receiptMeta">2 people</div>
+      </div>
+
+      <div class="receipt-body">
+        <div class="receipt-total-row">
+          <span class="receipt-total-label">Total Cost</span>
+          <span class="receipt-total-val" id="receiptTotal">$0</span>
+        </div>
+        <div class="receipt-cpp">
+          <span class="receipt-cpp-label">Cost per Person</span>
+          <span class="receipt-cpp-val" id="receiptCPP">$0</span>
+        </div>
+
+        <div class="receipt-section-label">Breakdown per person</div>
+        <div id="receiptBreakdown">
+          <div style="text-align:center;color:var(--muted);font-size:.83rem;padding:10px 0">Add expenses to see breakdown</div>
+        </div>
+
+        <div class="collect-box" id="collectBox" style="display:none">
+          <div class="collect-title">What to Collect from Others</div>
+          <div class="collect-row">
+            <span>Collect per person</span>
+            <span class="collect-val" id="collectPerPerson">$0</span>
+          </div>
+          <div class="collect-row">
+            <span class="collect-muted" id="collectFromCount"></span>
+            <span></span>
+          </div>
+          <hr class="receipt-divider" style="margin:8px 0">
+          <div class="collect-row">
+            <span style="font-weight:600">Total to collect</span>
+            <span class="collect-val" id="collectTotal">$0</span>
+          </div>
+          <div class="collect-row">
+            <span style="color:var(--muted)">Your net cost</span>
+            <span style="font-weight:600;color:var(--text)" id="myNetCost">$0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="receipt-footer">
+        <button class="btn btn-primary" id="evShareBtn" style="flex:1;justify-content:center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Copy Shareable Link
+        </button>
+        <button class="btn btn-ghost" id="evClearBtn" title="Clear all">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14H6L5 6"/>
+          </svg>
+        </button>
+      </div>
+    </div><!-- /receipt -->
+
+  </div><!-- /ev-wrap -->
+</div><!-- /tab-event -->
 
 <!-- ── Share Modal ──────────────────────────────────────────── -->
 <div class="overlay" id="shareOverlay">
@@ -997,6 +1337,186 @@ function showToast(msg, type = 'success') {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// ─── Tab Switching ────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    $('tab-' + btn.dataset.tab).classList.add('active');
+  };
+});
+
+// ─── Event Splitter State ─────────────────────────────────────
+let ES = { name: '', people: 2, items: [] };
+
+// ─── Event Splitter Bindings ──────────────────────────────────
+$('evEventName').addEventListener('input', () => {
+  ES.name = $('evEventName').value;
+  renderReceipt(); persistES();
+});
+$('evPeople').addEventListener('input', () => {
+  ES.people = Math.max(1, parseInt($('evPeople').value) || 1);
+  renderReceipt(); persistES();
+});
+
+$('evAddBtn').onclick = () => {
+  $('evAddForm').classList.toggle('open');
+  if ($('evAddForm').classList.contains('open')) $('evItemName').focus();
+};
+$('evCancelItem').onclick = () => $('evAddForm').classList.remove('open');
+$('evSubmitItem').onclick  = addEvItem;
+['evItemName','evItemAmt'].forEach(id =>
+  $(id).addEventListener('keydown', e => { if (e.key === 'Enter') addEvItem(); })
+);
+
+function addEvItem() {
+  const name = $('evItemName').value.trim();
+  const amt  = parseFloat($('evItemAmt').value);
+  const paid = $('evItemPaid').checked;
+  if (!name || isNaN(amt) || amt <= 0) { showToast('Enter a name and valid amount.', 'warn'); return; }
+  ES.items.push({ id: uid(), name, amount: amt, paidByMe: paid });
+  $('evItemName').value = ''; $('evItemAmt').value = ''; $('evItemPaid').checked = false;
+  $('evAddForm').classList.remove('open');
+  renderEvItems(); renderReceipt(); persistES();
+  showToast(`"${name}" added!`);
+}
+
+function renderEvItems() {
+  const list  = $('evItemsList');
+  const empty = $('evItemsEmpty');
+  list.querySelectorAll('.ev-item').forEach(el => el.remove());
+  if (ES.items.length === 0) { empty.style.display = ''; return; }
+  empty.style.display = 'none';
+  ES.items.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'ev-item' + (item.paidByMe ? ' is-paid' : '');
+    el.dataset.id = item.id;
+    el.innerHTML = `
+      <span class="ev-item-name">${esc(item.name)}</span>
+      ${item.paidByMe ? '<span class="paid-badge">I paid</span>' : ''}
+      <label class="ev-paid-chk-wrap" title="Mark as paid by me">
+        <input type="checkbox" class="ev-paid-chk" data-id="${item.id}" ${item.paidByMe ? 'checked' : ''} />
+        <span>${item.paidByMe ? '' : 'I paid'}</span>
+      </label>
+      <span class="ev-item-amt">${fmt(item.amount)}</span>
+      <button class="btn-icon ev-del-btn" data-id="${item.id}" title="Remove">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14H6L5 6"/>
+          <path d="M10 11v6M14 11v6"/>
+          <path d="M9 6V4h6v2"/>
+        </svg>
+      </button>`;
+    list.appendChild(el);
+  });
+}
+
+document.addEventListener('change', e => {
+  const chk = e.target.closest('.ev-paid-chk');
+  if (!chk) return;
+  const item = ES.items.find(x => x.id === chk.dataset.id);
+  if (item) { item.paidByMe = chk.checked; renderEvItems(); renderReceipt(); persistES(); }
+});
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.ev-del-btn');
+  if (!btn) return;
+  ES.items = ES.items.filter(x => x.id !== btn.dataset.id);
+  renderEvItems(); renderReceipt(); persistES();
+  showToast('Item removed.', 'info');
+});
+
+$('evClearBtn').onclick = () => {
+  if (ES.items.length === 0 && !ES.name) return;
+  ES = { name: '', people: 2, items: [] };
+  $('evEventName').value = '';
+  $('evPeople').value = '2';
+  renderEvItems(); renderReceipt(); persistES();
+  showToast('Cleared.', 'info');
+};
+
+function renderReceipt() {
+  const people = Math.max(1, ES.people);
+  const total  = ES.items.reduce((s, x) => s + x.amount, 0);
+  const cpp    = total / people;
+
+  $('receiptEventName').textContent = ES.name || 'Unnamed Event';
+  $('receiptMeta').textContent      = `${people} ${people === 1 ? 'person' : 'people'}`;
+  $('receiptTotal').textContent     = fmt(total);
+  $('receiptCPP').textContent       = fmt(cpp);
+
+  const bd = $('receiptBreakdown');
+  if (ES.items.length === 0) {
+    bd.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.83rem;padding:10px 0">Add expenses to see breakdown</div>';
+  } else {
+    bd.innerHTML = ES.items.map(item => `
+      <div class="receipt-line">
+        <span class="receipt-line-name">${esc(item.name)}</span>
+        <span class="receipt-line-total">${fmt(item.amount)}</span>
+        <span class="receipt-line-pp">${fmt(item.amount / people)}/person</span>
+      </div>`).join('');
+  }
+
+  const paidItems = ES.items.filter(x => x.paidByMe);
+  const cb = $('collectBox');
+  if (paidItems.length === 0 || people <= 1) { cb.style.display = 'none'; return; }
+  cb.style.display = '';
+  const paidTotal       = paidItems.reduce((s, x) => s + x.amount, 0);
+  const collectPerPerson = paidTotal / people;
+  const othersCount      = people - 1;
+  const totalToCollect   = collectPerPerson * othersCount;
+  const myNet            = paidTotal - totalToCollect;
+
+  $('collectPerPerson').textContent  = fmt(collectPerPerson);
+  $('collectFromCount').textContent  = `from each of ${othersCount} other ${othersCount === 1 ? 'person' : 'people'}`;
+  $('collectTotal').textContent      = fmt(totalToCollect);
+  $('myNetCost').textContent         = fmt(myNet);
+}
+
+$('evShareBtn').onclick = () => {
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(ES))));
+  const url = location.origin + location.pathname + '?e=' + encoded;
+  navigator.clipboard.writeText(url)
+    .then(() => showToast('Event link copied to clipboard! 🔗'))
+    .catch(() => {
+      const inp = document.createElement('textarea');
+      inp.value = url;
+      document.body.appendChild(inp); inp.select();
+      document.execCommand('copy'); document.body.removeChild(inp);
+      showToast('Event link copied!');
+    });
+};
+
+function persistES() {
+  try { localStorage.setItem('eventsplitter', JSON.stringify(ES)); } catch (_) {}
+}
+
+function loadES() {
+  try {
+    const param = new URLSearchParams(location.search).get('e');
+    if (param) {
+      const d = JSON.parse(decodeURIComponent(escape(atob(param))));
+      ES.name   = d.name   || '';
+      ES.people = d.people || 2;
+      ES.items  = d.items  || [];
+      // Switch to event tab
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector('[data-tab="event"]').classList.add('active');
+      $('tab-event').classList.add('active');
+      showToast('Event loaded from shared link! 🔗', 'info');
+      return;
+    }
+  } catch (_) {}
+  try {
+    const saved = JSON.parse(localStorage.getItem('eventsplitter') || '{}');
+    ES.name   = saved.name   || '';
+    ES.people = saved.people || 2;
+    ES.items  = saved.items  || [];
+  } catch (_) {}
+}
+
 // ─── Persistence ──────────────────────────────────────────────
 function persist() {
   try {
@@ -1031,8 +1551,14 @@ $('monthChip').textContent = new Date().toLocaleDateString('en-US', { month: 'lo
 
 // ─── Boot ─────────────────────────────────────────────────────
 loadState();
+loadES();
 applyTheme();
 render();
+// Sync event splitter inputs with loaded state
+$('evEventName').value = ES.name;
+$('evPeople').value    = ES.people;
+renderEvItems();
+renderReceipt();
 </script>
 </body>
 </html>
