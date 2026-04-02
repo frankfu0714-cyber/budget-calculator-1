@@ -482,7 +482,35 @@
     }
     .field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.12); }
 
-    .ev-add-row { display: grid; grid-template-columns: 1fr 110px; gap: 8px; margin-bottom: 10px; }
+    .ev-add-row { display: grid; grid-template-columns: 1fr 110px; gap: 8px; margin-bottom: 8px; }
+
+    /* ── Currency Converter ────────────────────────────────────── */
+    .ev-currency-row {
+      display: flex; align-items: center; gap: 7px;
+      margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .ev-currency-sel {
+      padding: 6px 9px;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: var(--surface); color: var(--text);
+      font-family: inherit; font-size: .8rem; font-weight: 600;
+      outline: none; cursor: pointer; flex-shrink: 0;
+      transition: border-color .15s;
+    }
+    .ev-currency-sel:focus { border-color: var(--accent); }
+    .ev-currency-amt {
+      width: 120px; flex-shrink: 0;
+      padding: 6px 10px;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: var(--surface2); color: var(--text);
+      font-family: inherit; font-size: .84rem;
+      outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .ev-currency-amt:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.12); }
+    .ev-currency-hint {
+      font-size: .78rem; color: var(--accent); font-weight: 600; flex: 1;
+      white-space: nowrap;
+    }
     .ev-paid-label {
       display: flex; align-items: center; gap: 7px;
       font-size: .84rem; font-weight: 500; color: var(--muted);
@@ -929,7 +957,18 @@
           <div class="add-form" id="evAddForm">
             <div class="ev-add-row">
               <input class="field-input" id="evItemName" type="text" placeholder="e.g. Venue Rent" autocomplete="off" style="margin:0" />
-              <input class="field-input" id="evItemAmt"  type="number" placeholder="Amount" min="0" step="1" style="margin:0" />
+              <input class="field-input" id="evItemAmt"  type="number" placeholder="Amount (TWD)" min="0" step="1" style="margin:0" />
+            </div>
+            <div class="ev-currency-row">
+              <select id="evCurrencySel" class="ev-currency-sel">
+                <option value="">TWD (direct)</option>
+                <option value="CNY">CNY ¥ (×4.4)</option>
+                <option value="USD">USD $ (×32)</option>
+                <option value="JPY">JPY ¥ (×0.21)</option>
+                <option value="EUR">EUR € (×34)</option>
+              </select>
+              <input id="evCurrencyAmt" type="number" class="ev-currency-amt" placeholder="Foreign amount" min="0" step="any" />
+              <span id="evCurrencyHint" class="ev-currency-hint"></span>
             </div>
             <div style="margin-bottom:10px">
               <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Amount Type</div>
